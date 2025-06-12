@@ -1,0 +1,211 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    user-select: none;
+}
+
+body { 
+    background-color: rgb(0, 0, 0);
+}
+
+@keyframes scrollStars {
+    from {
+        background-position: 0 0, 40px 60px, 130px 270px;
+    }
+    to {
+        background-position: 0 550px, 40px 410px, 130px 520px;
+    }
+}
+
+#money {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+#clickable {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 40px rgba(255, 255, 255, 0.4),
+                0 0 60px rgba(255, 255, 255, 0.2);
+    transition: box-shadow 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
+}
+
+#clickable:hover {
+    cursor: pointer;
+}
+
+#clickable:active {
+    width: 90px;
+    height: 90px;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.8),
+                0 0 60px rgba(255, 255, 255, 0.4),
+                0 0 80px rgba(255, 255, 255, 0.2);
+}
+
+#close-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(255, 189, 189);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8),
+                0 0 40px rgba(255, 255, 255, 0.4),
+                0 0 60px rgba(255, 255, 255, 0.2);
+    transition: box-shadow 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
+    cursor: pointer;
+    border: solid;
+    border-color: rgb(158, 88, 88);
+}
+
+#close-button::before,
+#close-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 3px;
+    background-color: rgb(255, 0, 0);
+}
+
+#close-button::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#close-button::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+#upgrade-bar {
+    pointer-events: all;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;  
+    pointer-events: none;
+    transform: translateY(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+#upgrade-bar.inactive {
+    transform: translateY(100%);
+}
+
+.upgrade-window {
+    pointer-events: all;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    opacity: 0.8;
+    background-color: rgb(255, 255, 255);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255, 255, 255);
+    white-space: nowrap;
+    display: none;
+    align-items: center;
+    padding: 0 10px;
+    border: solid;
+    border-color: rgb(99, 87, 87);
+    box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+#upgrade-window1 {
+    display: flex;
+}
+
+#window-swapper {
+    position: absolute;
+    bottom: 100px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    width: 100%;
+    height: 25px;
+    margin-bottom: 5px;
+}
+
+#window-swapper .upgrade {
+    height: 100%;
+    background-color: rgb(204, 103, 103);
+    min-width: 75px;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border: solid;
+    border-width: 2px;
+}
+
+.upgrade {
+    display: inline-block;
+    min-width: 150px;
+    height: 80px;
+    margin: 0 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: solid;
+    border-color: rgba(95, 146, 28, 1);
+    padding: 5px;
+    box-shadow: 0 0 5px rgb(0, 0, 0);
+    pointer-events: auto;
+}
+
+.upgrade:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+#health {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    mask-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2048px-Heart_coraz%C3%B3n.svg.png);
+    mask-size: 10% 100%;
+    mask-repeat: repeat-x;
+    mask-position: center;
+    -webkit-mask-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/2048px-Heart_coraz%C3%B3n.svg.png);
+    -webkit-mask-size: 10% 100%;
+    -webkit-mask-repeat: repeat-x;
+    -webkit-mask-position: left;
+    opacity: 0;
+    pointer-events: none
+}
+
+#health-bar {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Clicker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="external/pixi.js"></script>
+</head>
+<body>
+    <div id="money">0</div>
+    <div id="clickable" onclick="handleClick()"></div>
+    <div id="health">
+        <div id="health-bar"></div>
+    </div>
+    <div id="close-button" onclick="closeWindow()"></div>
+    <div id="upgrade-bar">
+        <div id="window-swapper">
+            <div class="upgrade" id="switch-1" onclick="switchWindow(1)">Normal Upgrades</div>
+            <div class="upgrade" id="switch-2" onclick="switchWindow(2)">Special Upgrades</div>
+        </div>
+        <div id="upgrade-window1" class="upgrade-window">
+            <div class="upgrade" id="click_factory" onclick="buyUpgrade(0)">
+                <div class="upgrade-name">Click Factory</div>
+                <div class="upgrade-cost" id="factory_0_cost">Cost: 0.1</div>
+            </div>
+            <div class="upgrade" id="factory_1" onclick="buyUpgrade(1)">
+                <div class="upgrade-name">Factory 1</div>
+                <div class="upgrade-cost" id="factory_1_cost">Cost: 5</div>
+            </div>
+            <div class="upgrade" id="factory_2" onclick="buyUpgrade(2)">
+                <div class="upgrade-name">Factory 2</div>
+                <div class="upgrade-cost" id="factory_2_cost">Cost: 250</div>
+            </div>
+            <div class="upgrade" id="factory_3" onclick="buyUpgrade(3)">
+                <div class="upgrade-name">Factory 3</div>
+                <div class="upgrade-cost" id="factory_3_cost">Cost: 1000</div>
+            </div>
+        </div>
+        <div id="upgrade-window2" class="upgrade-window">
+
+        </div>
+    </div>
+    <script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+    <script src="sounds.js"></script>
+    <script src="number.js"></script>
+    <script src="buyable.js"></script>
+    <script src="animations.js"></script>
+    <script src="collider.js"></script>
+    <script src="enemy.js"></script>
+    <script src="numberPopup.js"></script>
+    <script src="windowKey.js"></script>
+    <script src="background.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
