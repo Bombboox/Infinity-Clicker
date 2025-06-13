@@ -237,8 +237,17 @@ function addHealth(amount) {
     if(health > maxHealth) {
         health = maxHealth;
     }
+    if(health <= 0) {
+        gameOver();
+        return;
+    }
     healthBarOpacity = 2;
     refreshHealth();
+}
+
+function gameOver() {
+    alert("YOU DIED 💀");
+    window.location.reload();
 }
 
 async function fire(x, y) {
