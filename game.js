@@ -14,49 +14,82 @@ var mouseY = 0;
 
 const upgrades = [
     new Buyable({
-        name: "Click Factory",
+        name: "Miner",
         basePrice: new Num(0.1, 0),
+        icon: "sprites/miner.png",
         type: "click"
     }),
 
     new Buyable({
-        name: "Factory 1",
+        name: "Merchant",
         basePrice: new Num(5, 0),
+        icon: "sprites/merchant.png",
     }),
     
     new Buyable({
-        name: "Factory 2",
+        name: "Blacksmith",
         basePrice: new Num(25, 0),
+        icon: "sprites/blacksmith.png",
     }),
     
     new Buyable({
-        name: "Factory 3",
+        name: "Prince",
         basePrice: new Num(125, 0),
+        icon: "sprites/prince.png",
+    }),
+
+    new Buyable({
+        name: "King",
+        basePrice: new Num(625, 0),
+        icon: "sprites/king.png",
     }),
     
     new Buyable({
-        name: "Factory 3",
-        basePrice: new Num(625, 0),
-    }),
-
-    new Buyable({
-        name: "Factory 3",
+        name: "Apothocary",
         basePrice: new Num(3125, 0),
+        icon: "sprites/rat.png",
     }),
 
     new Buyable({
-        name: "Factory 3",
+        name: "Doctor",
         basePrice: new Num(15625, 0),
+        icon: "sprites/doctor.png",
     }),
 
     new Buyable({
-        name: "Factory 3",
+        name: "Cyclops",
         basePrice: new Num(78125, 0),
+        icon: "sprites/cyclops.png",
     }),
 
     new Buyable({
-        name: "Factory 3",
+        name: "Watcher",
         basePrice: new Num(390625, 0),
+        icon: "sprites/watcher.png",
+    }),
+
+    new Buyable({
+        name: "Fish",
+        basePrice: new Num(1953125, 0),
+        icon: "sprites/fish.png",
+    }),
+
+    new Buyable({
+        name: "Sphere",
+        basePrice: new Num(9765625, 0),
+        icon: "sprites/sphere.png",
+    }),
+
+    new Buyable({
+        name: "Wall",
+        basePrice: new Num(48828125, 0),
+        icon: "sprites/wall.png",
+    }),
+
+    new Buyable({
+        name: "Painter",
+        basePrice: new Num(244140625, 0),
+        icon: "sprites/painter.png",
     }),
 ];
 
@@ -132,6 +165,9 @@ upgrades.forEach((upgrade, index) => {
     upgradeDiv.id = `factory_${index}`;
     upgradeDiv.onclick = () => buyUpgrade(index);
 
+    const textDiv = document.createElement("div");
+    textDiv.className = "upgrade-text";
+
     const nameDiv = document.createElement("div");
     nameDiv.className = "upgrade-name";
     nameDiv.textContent = upgrade.name;
@@ -146,9 +182,18 @@ upgrades.forEach((upgrade, index) => {
     valueDiv.id = `factory_${index}_value`;
     valueDiv.textContent = `Value: ${upgrade.getValue()}`;
 
-    upgradeDiv.appendChild(nameDiv);
-    upgradeDiv.appendChild(costDiv);
-    upgradeDiv.appendChild(valueDiv);
+    // Append text elements to the text container
+    textDiv.appendChild(nameDiv);
+    textDiv.appendChild(costDiv);
+    textDiv.appendChild(valueDiv);
+
+    const iconDiv = document.createElement("div");
+    iconDiv.className = "icon";
+    iconDiv.style.backgroundImage = `url(${upgrade.icon})`;
+
+    // Append the text container and icon to the upgrade div
+    upgradeDiv.appendChild(textDiv);
+    upgradeDiv.appendChild(iconDiv);
     upgradeWindow1.appendChild(upgradeDiv);
 });
 
@@ -194,9 +239,9 @@ function addHealth(amount) {
 
 async function fire(x, y) {
     if(Math.random() < 0.8) {
-        playSound(laserSound, 0.5);
+        playSound(laserSound, 0.3);
     } else {
-        playSound(gunSound, 0.5);
+        playSound(gunSound, 0.3);
     }   
 
     createAnimation({
@@ -215,8 +260,7 @@ async function fire(x, y) {
 
     for(const enemy of enemies) {
         if(enemy.collider.collidesWithCircle(x, y, 25)) {
-            enemy.health.sub(num(10));
-            console.log(enemy.health);
+            enemy.hurt(num(10));
             return;
         }
     }
@@ -233,8 +277,9 @@ function refreshMoney() {
 function refreshUpgrades() {
     moneyPerClick = new Num(1, -2);
     idleMoney = new Num(0, 0);
+    console.log("refreshed");
     for(const upgrade of upgrades) {
-        if(upgrade.level.value <= 0) return;
+        if(upgrade.level.value <= 0) continue;
         if(upgrade.type === "click") {
             moneyPerClick.add(upgrade.value);
         } else {

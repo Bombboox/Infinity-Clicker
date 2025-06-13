@@ -1,5 +1,5 @@
 class Buyable {
-    constructor(options = {name, basePrice, costExponent, level, type}) {
+    constructor(options = {name, basePrice, costExponent, level, type, icon}) {
         this.name = options.name ?? "Man";
         this.basePrice = options.basePrice ?? new Num(1, 0); 
         this.costExponent = options.costExponent ?? new Num(1.07, 0);  
@@ -16,6 +16,7 @@ class Buyable {
         this.price = new Num(0, 0);
         this.type = options.type ?? "idle";
         this.value = new Num(0, 0);
+        this.icon = options.icon ?? "sprites/miner.png";
 
         this.updatePrice();
         this.updateValue();

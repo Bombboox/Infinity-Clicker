@@ -23,24 +23,39 @@ class Num {
     }
  
     add(other) {
+        if (!(other instanceof Num)) {
+            other = new Num(other);
+        }
         const result = Num.add(this, other);
         this.value = result.value;
         this.exponent = result.exponent;
+        return this;
     }
 
     sub(other) {
+        if (!(other instanceof Num)) {
+            other = new Num(other);
+        }
         const result = Num.add(this, new Num(-other.value, other.exponent));
         this.value = result.value;
         this.exponent = result.exponent;
+        return this;
     }
 
     mul(other) {
+        if (!(other instanceof Num)) {
+            other = new Num(other);
+        }
         const result = Num.mul(this, other);
         this.value = result.value;
         this.exponent = result.exponent;
+        return this;
     }
 
     pow(power) {
+        if (!(power instanceof Num)) {
+            power = power instanceof Num ? power.value : power;
+        }
         const result = Num.pow(this, power);
         this.value = result.value;
         this.exponent = result.exponent;
