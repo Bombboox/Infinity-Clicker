@@ -312,7 +312,7 @@ function gameLoop(deltaTime) {
     healthContainer.style.opacity = healthBarOpacity;
 
     for(const enemy of enemies) {
-        enemy.update();
+        enemy.update(delta);
     }
     
     for(const particle of particles) {
