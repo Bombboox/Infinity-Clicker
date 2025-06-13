@@ -1,5 +1,5 @@
 class Enemy {
-    constructor(options = {x, y, maxHealth, health, damage, reward, animationSettings, colllider, difficulty}) {
+    constructor(options = {x, y, maxHealth, health, damage, reward, animationSettings, colllider, difficulty, speed}) {
         this.x = options.x ?? 0;
         this.y = options.y ?? 0;
 
@@ -10,6 +10,11 @@ class Enemy {
         this.damage = options.damage ?? 1;
         this.reward = options.reward ?? new Num(1, 0);
         this.collider = options.collider ?? new BoxCollider({parent: this, x: this.x, y: this.y, width: 200, height: 200});
+        
+        this.speed = options.speed ?? 1;
+        this.dx = 0;
+        this.dy = 0;
+        
         this.animationSettings = options.animationSettings ?? {
             sheet: "resources/reaper.png",
             frameWidth: 200,
@@ -33,15 +38,13 @@ class Enemy {
         });
     }
 
-    moveTowards(x, y) {
-        const direction = new Vec2(x - this.x, y - this.y);
-        const distance = direction.length();
-        const speed = 100;
-        const time = distance / speed;
-        const dx = direction.x * time;
-        const dy = direction.y * time;
-        this.x += dx;
-        this.y += dy;
+    moveTowards(x, y, delta) {
+        let direction = vector(x - this.x, y - this.y);
+        direction = direction.normalize();
+        this.dx = direction.x * this.speed * delta;
+        this.dy = direction.y * this.speed * delta;
+        this.x += this.dx;
+        this.y += this.dy;
     } 
  
     hurt(amount) {
@@ -70,15 +73,26 @@ class Enemy {
     }
 
     update(delta = 1/60) {
-        // Flash logic
         if (this.flashTime > 0 && this.animation) {
             this.flashTime -= delta;
             if (this.flashTime <= 0) {
                 this.animation.tint = this._originalTint ?? 0xFFFFFF;
             }
         }
-        // OVERRIDE IN SUBCLASS
-        // console.log("Enemy update");
+        this.updateAnimation();
+    }
+
+    updateAnimation() {
+        if(!this.animation) return;
+
+        this.animation.x = this.x;
+        this.animation.y = this.y;
+
+        if(this.dx > 0) {
+            this.animation.scale.x = positive(this.animation.scale.x);
+        } else if(this.dx < 0) {
+            this.animation.scale.x = negative(this.animation.scale.x);
+        }
     }
 }
 
@@ -88,7 +102,8 @@ class Reaper extends Enemy {
             x: options.x ?? -150,
             y: options.y ?? 0,
             difficulty: options.difficulty ?? 1,
-            maxHealth: new Num(100, 0),
+            maxHealth: new Num(45, 0),
+            speed: 1.20,
             damage: 1,
             reward: new Num(1, 0),
             animationSettings: {
@@ -117,7 +132,7 @@ class Reaper extends Enemy {
             this.animation.x = this.x;
         }
 
-        // Call parent update for flash effect
+        this.moveTowards(0, 0, delta * 100);
         super.update(delta);
     }
 }
@@ -129,17 +144,18 @@ class Ghost extends Enemy {
             y: options.y ?? 0,
             difficulty: options.difficulty ?? 1,
             maxHealth: new Num(100, 0),
+            speed: 0.8,
             damage: 1,
             reward: new Num(1, 0),
             animationSettings: {
                 sheet: "resources/ghost.png",
-                frameWidth: 200,
-                frameHeight: 200,
+                frameWidth: 1024,
+                frameHeight: 1024,
                 frameCount: 6,
                 animationSpeed: 0.5,
                 loop: true,
                 worldContainer: worldContainer,
-                scale: 0.5
+                scale: 0.075
             },
         });
         this.collider = new BoxCollider({parent: this, x: this.x, y: this.y, width: 100, height: 100})
@@ -157,7 +173,7 @@ class Ghost extends Enemy {
             this.animation.x = this.x;
         }
 
-        // Call parent update for flash effect
+        this.moveTowards(0, 0, delta * 100);
         super.update(delta);
     }
 }

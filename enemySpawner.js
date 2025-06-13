@@ -1,4 +1,5 @@
 const ENEMY_TYPES = [
+    Ghost,
     Reaper
 ];
 
@@ -7,10 +8,10 @@ class EnemySpawner {
         this.baseDifficulty = options.baseDifficulty ?? 1;
         this.difficulty = this.baseDifficulty;
 
-        this.timeBetweenSpawns = options.timeBetweenSpawns ?? 1000;
+        this.timeBetweenSpawns = options.timeBetweenSpawns ?? 5000;
         this.timer = this.timeBetweenSpawns;
 
-        this.enemyRange = options.enemyRange ?? ENEMIES.length - 1;
+        this.enemyRange = options.enemyRange ?? ENEMY_TYPES.length;
 
     }
 
@@ -39,20 +40,20 @@ class EnemySpawner {
         var randomX, randomY;
         switch(edge) {
             case "left":
-                randomX = -100;
+                randomX = -innerWidth / 2 - 100;
                 randomY = Math.random() * window.innerHeight;
                 break;
             case "top":
                 randomX = Math.random() * window.innerWidth;
-                randomY = -100;
+                randomY = -innerHeight / 2 - 100;
                 break;
             case "right":
-                randomX = window.innerWidth + 100;
+                randomX = innerWidth / 2 + 100;
                 randomY = Math.random() * window.innerHeight;
                 break;
             case "bottom":
                 randomX = Math.random() * window.innerWidth;
-                randomY = window.innerHeight + 100;
+                randomY = innerHeight / 2 + 100;
                 break;
         }
 
@@ -62,7 +63,7 @@ class EnemySpawner {
             difficulty: this.difficulty
         }
 
-        const enemy = new ENEMY_TYPES[Math.floor(Math.random() * this.enemyRange)]();
+        const enemy = new ENEMY_TYPES[Math.floor(Math.random() * this.enemyRange)](options);
         enemies.push(enemy);
     }
 }

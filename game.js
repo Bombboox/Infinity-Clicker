@@ -1,3 +1,7 @@
+const enemySpawner = new EnemySpawner({
+    difficulty: 1,
+});
+
 var money = new Num(0, 0);
 var moneyPerClick = new Num(1, -2);
 var idleMoney = new Num(0, 0);
@@ -261,7 +265,13 @@ async function fire(x, y) {
     for(const enemy of enemies) {
         if(enemy.collider.collidesWithCircle(x, y, 25)) {
             enemy.hurt(num(10));
-            return;
+            new NumberPopup({
+                string: "10",
+                x: x,
+                y: y,
+                fontSize: 24,
+                color: 0xFFFFFF,
+            });
         }
     }
 
@@ -292,7 +302,9 @@ function refreshHealth() {
     healthBar.style.width = `${health / maxHealth * 100}%`;
 }
 
-function gameLoop(delta) {
+function gameLoop(deltaTime) {
+    const delta = deltaTime.deltaTime * (1000 / 60);
+
     healthBarOpacity -= 0.01;
     if(healthBarOpacity < 0) {
         healthBarOpacity = 0;
@@ -308,6 +320,7 @@ function gameLoop(delta) {
     }
 
     starfield.update();
+    enemySpawner.update(delta);
 
     fixWorldContainerPosition();
     addMoney(Num.mul(idleMoney, new Num(60/1000, 0)));
